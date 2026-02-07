@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For My Valentine ❤️</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Pacifico&display=swap" rel="stylesheet">
+
+<style>
+/* --- 1. ANIMATED BACKGROUND --- */
+body{
+    margin:0;
+    padding:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+    overflow:hidden;
+    font-family:'Nunito',sans-serif;
+    background:linear-gradient(45deg,#ff9a9e,#fad0c4,#ffecd2,#fcb69f);
+    background-size:400% 400%;
+    animation:gradientBG 15s ease infinite;
+}
+
+@keyframes gradientBG{
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+
+/* --- 2. GLASSMORPHISM CARD --- */
+.card{
+    background:rgba(255,255,255,0.95);
+    backdrop-filter:blur(15px);
+    -webkit-backdrop-filter:blur(15px);
+    border-radius:30px;
+    padding:50px 60px;
+    box-shadow:0 8px 32px 0 rgba(31,38,135,0.37);
+    border:1px solid rgba(255,255,255,0.18);
+    text-align:center;
+
+    max-width:90%;
+    width:600px;
+    max-height:90vh;
+    overflow-y:auto;
+
+    /* ✅ FIX: card needs relative positioning so the No button
+       can be positioned absolutely within it */
+    position:relative;
+    z-index:10;
+}
+
+h1{
+    font-family:'Pacifico',cursive;
+    color:#ff4d6d;
+    font-size:3rem;
+    margin:25px 0;
+    line-height:1.2;
+    text-shadow:2px 2px 4px rgba(0,0,0,0.1);
+}
+
+.gif-container{
+    margin-bottom:20px;
+}
+
+.gif-container img{
+    width:100%;
+    max-width:300px;
+    border-radius:20px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.15);
+}
+
+/* --- BUTTONS CONTAINER --- */
+.buttons{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:25px;
+    margin-top:30px;
+    min-height:100px;
+    position:relative;
+    padding:20px;
+}
+
+.btn{
+    padding:15px 40px;
+    font-size:1.4rem;
+    border:none;
+    border-radius:50px;
+    cursor:pointer;
+    font-weight:700;
+    transition:all 0.3s ease;
+    outline:none;
+}
+
+.yes-btn{
+    background:linear-gradient(to right,#ff416c,#ff4b2b);
+    color:white;
+    box-shadow:0 4px 15px rgba(255,65,108,0.4);
+    z-index:20;
+    position:relative;
+    animation:pulse 2s infinite;
+}
+
+@keyframes pulse{
+    0%{transform:scale(1);box-shadow:0 0 0 0 rgba(255,65,108,0.7)}
+    70%{transform:scale(1.05);box-shadow:0 0 0 15px rgba(255,65,108,0)}
+    100%{transform:scale(1);box-shadow:0 0 0 0 rgba(255,65,108,0)}
+}
+
+.yes-btn:hover{
+    transform:scale(1.1)!important;
+    background:linear-gradient(to right,#ff4b2b,#ff416c);
+}
+
+/* -------- NO BUTTON -------- */
+.no-btn{
+    background-color:#fff;
+    color:#ff4d6d;
+    border:2px solid #ff4d6d;
+    white-space:nowrap;
+    transition:all 0.2s ease;
+}
+
+/* ✅ FIX: When moving, position relative to .card (not .buttons) */
+.no-btn.moving{
+    position:absolute;
+    z-index:30;
+}
+
+.no-btn:hover{
+    background-color:#fff0f3;
+}
+
+/* --- OVERLAY --- */
+#overlay{
+    position:fixed;
+    top:0;left:0;width:100%;height:100%;
+    background:rgba(0,0,0,0.85);
+    z-index:9999;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    color:white;
+    cursor:pointer;
+    backdrop-filter:blur(5px);
+}
+
+.overlay-text{
+    font-family:'Pacifico',cursive;
+    font-size:3rem;
+    animation:fadeIn 1s ease;
+}
+
+@keyframes fadeIn{
+    from{opacity:0;transform:translateY(20px)}
+    to{opacity:1;transform:translateY(0)}
+}
+
+/* --- BACKGROUND HEARTS --- */
+.heart{
+    position:absolute;
+    color:rgba(255,255,255,0.6);
+    font-size:2rem;
+    animation:floatUp linear infinite;
+    z-index:1;
+    pointer-events:none;
+}
+
+@keyframes floatUp{
+    0%{transform:translateY(100vh) rotate(0deg);opacity:1}
+    100%{transform:translateY(-10vh) rotate(360deg);opacity:0}
+}
+
+/* SUCCESS */
+.success-box{
+    display:none;
+    flex-direction:column;
+    align-items:center;
+    animation:bounceIn 0.6s ease;
+}
+
+@keyframes bounceIn{
+    0%{transform:scale(0);opacity:0}
+    50%{transform:scale(1.1)}
+    100%{transform:scale(1);opacity:1}
+}
+
+.success-box h1{
+    font-size:3.5rem;
+    margin:20px 0;
+}
+
+.success-box p{
+    font-size:1.5rem;
+    color:#555;
+    margin:10px 0;
+}
+
+/* Responsive */
+@media (max-width: 768px){
+    .card{
+        padding:40px 30px;
+        width:85%;
+    }
+    
+    h1{
+        font-size:2.2rem;
+    }
+    
+    .btn{
+        font-size:1.2rem;
+        padding:12px 30px;
+    }
+    
+    .overlay-text{
+        font-size:2rem;
+    }
+    
+    .gif-container img{
+        max-width:250px;
+    }
+}
+
+/* Smooth scroll */
+.card::-webkit-scrollbar{
+    width:8px;
+}
+
+.card::-webkit-scrollbar-track{
+    background:rgba(255,255,255,0.1);
+    border-radius:10px;
+}
+
+.card::-webkit-scrollbar-thumb{
+    background:rgba(255,77,109,0.3);
+    border-radius:10px;
+}
+
+.card::-webkit-scrollbar-thumb:hover{
+    background:rgba(255,77,109,0.5);
+}
+</style>
+</head>
+
+<body>
+
+<audio id="bg-music" loop>
+    <source src="song.mp3" type="audio/mpeg">
+</audio>
+
+<div id="overlay" onclick="startExperience()">
+    <div class="overlay-text">Tap to Open ❤️</div>
+    <div style="font-size:1.2rem;margin-top:15px;opacity:0.8">(Sound On)</div>
+</div>
+
+<div id="hearts-container"></div>
+
+<div class="card" id="mainCard">
+
+<div id="question-box">
+    <div class="gif-container">
+        <img src="https://media.tenor.com/gUiu1zyxfzYAAAAi/bear-kiss-bear-kisses.gif" alt="Cute bear">
+    </div>
+
+    <h1>Will you be my Valentine?</h1>
+
+    <div class="buttons">
+        <button class="btn yes-btn" onclick="acceptLove()">YES</button>
+        <button class="btn no-btn" id="noBtn"
+                onmouseover="moveButton()"
+                ontouchstart="moveButton(event)">No</button>
+    </div>
+</div>
+
+<div class="success-box" id="success-box">
+    <div class="gif-container">
+        <img src="https://media.tenor.com/IVKCqFpeLZQAAAAi/cute-bear.gif" alt="Happy bear">
+    </div>
+    <h1>YAY! I Love You! ❤️</h1>
+    <p>Best decision ever!</p>
+    <p style="font-size:1.2rem;margin-top:10px;opacity:0.7">You've made me the happiest! 🥰</p>
+</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<script>
+const noBtn = document.getElementById('noBtn');
+const yesBtn = document.querySelector('.yes-btn');
+const questionBox = document.getElementById('question-box');
+const successBox = document.getElementById('success-box');
+const bgMusic = document.getElementById('bg-music');
+const overlay = document.getElementById('overlay');
+const mainCard = document.getElementById('mainCard');
+
+let yesScale = 1;
+
+/* CHEESY LINES */
+const cheesyLines = [
+"No","Are you sure?","Really sure??","Think again!","Last chance!",
+"Surely not?","You might regret this!","Give it another thought!",
+"Are you absolutely certain?","This could be a mistake!","Have a heart!",
+"Don't be so cold!","Change of heart?","Wouldn't you reconsider?",
+"Is that your final answer?","You're breaking my heart ;(","Plsss? 🥺",
+"Pookie please 🥺","Don't do this to me!","I'm gonna cry... 😭",
+"You're breaking my heart 💔","But I love you! ❤️","Look at the cute bear! 🧸",
+"No is not an option!","Try the green button ✅","I'll make you cookies! 🍪",
+"Pretty please? 🍒","Don't be mean! 😢","I'll be so sad... 😞",
+"The bear is sad now 🥺","Think of all the fun!","We're perfect together!",
+"You know you want to 😊","Just say yes already!","I'll write you poems! 📝"
+];
+
+function startExperience(){
+    overlay.style.display='none';
+    bgMusic.volume=0.5;
+    bgMusic.play().catch(()=>{});
+}
+
+/* ✅ FIXED: Move button within the ENTIRE card, not just .buttons */
+function moveButton(event){
+    if(event) event.preventDefault();
+
+    // On first hover, reparent the button to the card so it can
+    // move anywhere inside it, then make it absolutely positioned.
+    if(!noBtn.classList.contains('moving')){
+        noBtn.classList.add('moving');
+        // Move the button element from .buttons into .card (#mainCard)
+        mainCard.appendChild(noBtn);
+    }
+
+    // Change text
+    noBtn.innerText = cheesyLines[Math.floor(Math.random() * cheesyLines.length)];
+
+    // Get card's inner dimensions (the movement area)
+    const cardRect = mainCard.getBoundingClientRect();
+    const btnRect = noBtn.getBoundingClientRect();
+
+    const btnW = btnRect.width;
+    const btnH = btnRect.height;
+
+    // Padding from the card edges so the button never clips outside
+    const padding = 20;
+
+    // Available space inside the card (account for CSS padding via clientWidth)
+    const availW = mainCard.clientWidth - btnW - padding * 2;
+    const availH = mainCard.clientHeight - btnH - padding * 2;
+
+    // Safety: if the card is somehow too small, bail out
+    if(availW <= 0 || availH <= 0) return;
+
+    // ✅ Avoid landing on top of the YES button
+    const yesBtnRect = yesBtn.getBoundingClientRect();
+    let x, y, attempts = 0;
+
+    do {
+        x = Math.random() * availW + padding;
+        y = Math.random() * availH + padding;
+        attempts++;
+    } while(
+        attempts < 50 &&
+        isOverlapping(
+            cardRect.left + x, cardRect.top + y, btnW, btnH,
+            yesBtnRect.left, yesBtnRect.top, yesBtnRect.width, yesBtnRect.height
+        )
+    );
+
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+
+    // Grow the YES button
+    yesScale += 0.1;
+    yesBtn.style.transform = `scale(${yesScale})`;
+}
+
+/* Helper: check if two rectangles overlap */
+function isOverlapping(x1, y1, w1, h1, x2, y2, w2, h2){
+    return !(x1 + w1 < x2 || x1 > x2 + w2 || y1 + h1 < y2 || y1 > y2 + h2);
+}
+
+function acceptLove(){
+    questionBox.style.display='none';
+    successBox.style.display='flex';
+    yesBtn.style.animation='none';
+
+    // Hide the No button on success
+    noBtn.style.display='none';
+
+    // Confetti explosion
+    confetti({
+        particleCount:200,
+        spread:100,
+        origin:{y:0.6},
+        colors:['#ff416c','#ff4b2b','#ffa6c1','#ffb3ba']
+    });
+
+    // Continuous confetti
+    const end = Date.now() + 4000;
+    (function frame(){
+        confetti({
+            particleCount:3,
+            angle:60,
+            spread:55,
+            origin:{x:0},
+            colors:['#ff416c','#ff4b2b']
+        });
+        confetti({
+            particleCount:3,
+            angle:120,
+            spread:55,
+            origin:{x:1},
+            colors:['#ff416c','#ff4b2b']
+        });
+        if(Date.now() < end) requestAnimationFrame(frame);
+    })();
+}
+
+/* FLOATING HEARTS BACKGROUND */
+function createHearts(){
+    const container = document.getElementById('hearts-container');
+    for(let i = 0; i < 35; i++){
+        const heart = document.createElement('div');
+        heart.className = 'heart';
+        heart.innerHTML = '❤️';
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
+        heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+        heart.style.opacity = Math.random() * 0.6 + 0.2;
+        heart.style.animationDelay = Math.random() * 5 + 's';
+        container.appendChild(heart);
+    }
+}
+createHearts();
+</script>
+</body>
+</html>
